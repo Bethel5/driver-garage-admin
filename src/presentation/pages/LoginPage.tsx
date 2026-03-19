@@ -1,18 +1,20 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { Mail, Lock } from "lucide-react"
 import { AuthRepositoryImpl } from "../../infrastructure/repositories/AuthRepositoryImpl"
 import { loginAdmin } from "../../application/useCases/loginAdmin"
 
-const authRepo = new AuthRepositoryImpl()
-
 export default function LoginPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const navigate = useNavigate()
 
   const handleLogin = async () => {
+    const authRepo = new AuthRepositoryImpl()
     try {
       await loginAdmin(authRepo, email, password)
-      alert("Login successful")
+
+      navigate("/dashboard") 
     } catch (error) {
       alert("Invalid credentials")
     }

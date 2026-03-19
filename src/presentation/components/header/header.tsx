@@ -1,0 +1,50 @@
+import { Bell, ChevronDown } from "lucide-react"
+import { useNavigate } from "react-router-dom"
+import { useState } from "react"
+import type { HeaderProps } from "./header.types"
+
+const Header = ({ title = "Dashboard", onLogout }: HeaderProps) => {
+  const navigate = useNavigate()
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+
+  return (
+    <div className="flex items-center justify-between bg-white px-6 py-4 shadow-sm border-b relative">
+      <h1 className="text-xl font-semibold">{title}</h1>
+
+      <div className="flex items-center gap-4">
+        <button
+          onClick={() => navigate("/notifications")}
+          className="relative hover:text-yellow-500 transition"
+        >
+          <Bell className="w-5 h-5" />
+          <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1">
+            3
+          </span>
+        </button>
+
+        <div className="relative">
+          <button
+            onClick={() => setDropdownOpen(!dropdownOpen)}
+            className="flex items-center gap-1 hover:text-yellow-500 transition"
+          >
+            <span className="text-sm text-gray-700">Admin</span>
+            <ChevronDown className="w-4 h-4" />
+          </button>
+
+          {dropdownOpen && (
+            <div className="absolute right-0 mt-2 w-32 bg-white border rounded shadow-md">
+              <button
+                onClick={onLogout}
+                className="block w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+              >
+                Logout
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default Header

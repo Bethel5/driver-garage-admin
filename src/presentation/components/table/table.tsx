@@ -15,7 +15,7 @@ const Table = <T extends object>({ columns, data }: TableProps<T>) => {
 
       <tbody>
         {data.map((row, index) => (
-          <tr key={index} className="hover:bg-gray-50">
+          <tr key={index}>
             {columns.map((col) => (
               <td key={String(col.key)} className="border p-2">
                 {col.render

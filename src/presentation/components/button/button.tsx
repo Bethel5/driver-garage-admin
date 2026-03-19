@@ -8,8 +8,9 @@ const Button = ({
   const base = "px-4 py-2 rounded font-medium";
 
   const styles = {
-    primary: "bg-blue-600 text-white hover:bg-blue-700",
+    primary: "bg-yellow-200 text-black hover:bg-yellow-300",
     secondary: "bg-gray-200 hover:bg-gray-300",
+    link: "text-yellow-500 hover:text-yellow-600",
   };
 
   return (

@@ -7,6 +7,8 @@ import { RejectGarageUseCase } from "../../application/useCases/GarageApproval/r
 import { EyeIcon } from "lucide-react"
 import Table from "../components/table/table"
 import Button from "../components/button/button"
+import { SearchGaragesUseCase } from "../../application/useCases/GarageApproval/searchGarage"
+import Input from "../components/input/input"
 
 export default function GarageApprovalsPage() {
     const [garages, setGarages] = useState<Garage[]>([])
@@ -14,6 +16,7 @@ export default function GarageApprovalsPage() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState<string | null>(null)
     const [showModal, setShowModal] = useState(false)
+    const [search, setSearch] = useState("")
 
     const repository = new GarageRepositoryImpl()
 
@@ -31,6 +34,20 @@ export default function GarageApprovalsPage() {
         }
         fetchGarages()
     }, [])
+
+    const handleSearch = async (term: string) => {
+        setSearch(term)
+        if (!term) {
+            const data = await repository.findAll()
+            setGarages(data)
+            return
+        }
+
+        const useCase = new SearchGaragesUseCase(repository)
+        const results = await useCase.execute(term)
+        setGarages(results)
+    }
+
 
     const handleReview = async (id: string) => {
         try {
@@ -83,11 +100,11 @@ export default function GarageApprovalsPage() {
             key: "status",
             title: "Status",
             render: (value) => (
-            <span
-                className={`px-3 py-1 rounded font-medium ${statusColors[value as string]}`}
-            >
-                {value === "PENDING" ? "Pending" : value === "ACTIVE" ? "Active" : "Rejected"}
-            </span>
+                <span
+                    className={`px-3 py-1 rounded font-medium ${statusColors[value as string]}`}
+                >
+                    {value === "PENDING" ? "Pending" : value === "ACTIVE" ? "Active" : "Rejected"}
+                </span>
             ),
         },
         {
@@ -110,7 +127,21 @@ export default function GarageApprovalsPage() {
     return (
         <div className="p-6">
             <h1 className="text-2xl font-bold mb-4">Garage Approvals</h1>
-            <Table columns={columns} data={garages} />
+            <div className="mb-4">
+                <p>Review and approve garage registration requests</p>
+            </div>
+            <div className="mb-4">
+                <Input
+                    type="text"
+                    placeholder="Search by name"
+                    onChange={(e) => handleSearch(e.target.value)}
+                />
+            </div>
+            {garages.length === 0 && search ? (
+                <p className="text-gray-500">No garages found for "{search}"</p>
+            ) : (
+                <Table columns={columns} data={garages} />
+            )}
 
             {showModal && selectedGarage && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">

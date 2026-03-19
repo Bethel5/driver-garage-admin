@@ -17,4 +17,11 @@ export class GarageRepositoryImpl implements GarageRepository {
     const response = await axiosClient.patch(`/admin/garages-approval/${id}/status`, { status })
     return response.data
   }
+
+  async searchGarages(term: string): Promise<Garage[]> {
+    const response = await axiosClient.get(`/admin/garages-approval/search`, {
+      params: { q: term }
+    })
+    return response.data
+  }
 }

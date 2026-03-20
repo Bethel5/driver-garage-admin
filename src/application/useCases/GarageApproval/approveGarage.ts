@@ -8,6 +8,6 @@ export class ApproveGarageUseCase {
     if (!garage) throw new Error("Garage not found")
     if (garage.status === "ACTIVE") return garage
 
-    return this.repository.updateStatus(id, "ACTIVE")
+    return this.repository.approveGarage(id, "ACTIVE")
   }
 }

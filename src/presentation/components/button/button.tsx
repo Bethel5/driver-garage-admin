@@ -10,6 +10,8 @@ const Button = ({
   const styles = {
     primary: "bg-yellow-200 text-black hover:bg-yellow-300",
     secondary: "bg-gray-200 hover:bg-gray-300",
+    approve: "bg-green-300 text-black",
+    reject: "bg-red-300 text-black",
     link: "text-yellow-500 hover:text-yellow-600",
   };
 

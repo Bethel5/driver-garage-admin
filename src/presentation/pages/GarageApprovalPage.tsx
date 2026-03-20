@@ -9,6 +9,7 @@ import Table from "../components/table/table"
 import Button from "../components/button/button"
 import { SearchGaragesUseCase } from "../../application/useCases/GarageApproval/searchGarage"
 import Input from "../components/input/input"
+import Dialog from "../components/dialogBox/dialogBox"
 
 export default function GarageApprovalsPage() {
     const [garages, setGarages] = useState<Garage[]>([])
@@ -143,30 +144,34 @@ export default function GarageApprovalsPage() {
                 <Table columns={columns} data={garages} />
             )}
 
-            {showModal && selectedGarage && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <div className="bg-white p-6 rounded shadow-lg w-96">
-                        <h2 className="text-xl font-bold mb-4">Review Garage</h2>
-                        <p><strong>Name:</strong> {selectedGarage.name}</p>
-                        <p><strong>Email:</strong> {selectedGarage.email}</p>
-                        <p><strong>Phone:</strong> {selectedGarage.phone}</p>
-                        <p><strong>Location:</strong> {selectedGarage.location}</p>
-                        <p><strong>Status:</strong> {selectedGarage.status}</p>
-
-                        <div className="flex gap-2 mt-4">
-                            <Button variant="primary" onClick={handleApprove}>
-                                Approve
-                            </Button>
-                            <Button variant="secondary" onClick={handleReject}>
-                                Reject
-                            </Button>
-                            <Button variant="secondary" onClick={() => setShowModal(false)}>
-                                Cancel
-                            </Button>
-                        </div>
-                    </div>
-                </div>
-            )}
+            <Dialog
+                isOpen={showModal}
+                onClose={() => setShowModal(false)}
+                title="Garage Registration Review"
+                actions={
+                    <>
+                        <Button variant="approve" onClick={handleApprove}>
+                            Approve Garage
+                        </Button>
+                        <Button variant="reject" onClick={handleReject}>
+                            Reject Application
+                        </Button>
+                        <Button variant="secondary" onClick={() => setShowModal(false)}>
+                            Cancel
+                        </Button>
+                    </>
+                }
+            >
+                {selectedGarage && (
+                    <>
+                        <p>Garage Name: {selectedGarage.name}</p>
+                        <p>Email: {selectedGarage.email}</p>
+                        <p>Phone Number: {selectedGarage.phone}</p>
+                        <p>Location: {selectedGarage.location}</p>
+                        <p>Status: {selectedGarage.status}</p>
+                    </>
+                )}
+            </Dialog>
         </div>
     )
 }

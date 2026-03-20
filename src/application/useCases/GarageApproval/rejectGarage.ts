@@ -8,6 +8,6 @@ export class RejectGarageUseCase {
     if (!garage) throw new Error("Garage not found")
     if (garage.status === "REJECTED") return garage
 
-    return this.repository.updateStatus(id, "REJECTED")
+    return this.repository.rejectGarage(id, "REJECTED")
   }
 }

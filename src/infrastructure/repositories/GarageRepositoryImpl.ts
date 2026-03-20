@@ -13,8 +13,13 @@ export class GarageRepositoryImpl implements GarageRepository {
     return response.data ?? null
   }
 
-  async updateStatus(id: string, status: GarageStatus): Promise<Garage> {
-    const response = await axiosClient.patch(`/admin/garages-approval/${id}/status`, { status })
+  async approveGarage(id: string, status: GarageStatus): Promise<Garage> {
+    const response = await axiosClient.post(`/admin/garages-approval/${id}/approve`, { status })
+    return response.data
+  }
+
+  async rejectGarage(id: string, status: GarageStatus): Promise<Garage> {
+    const response = await axiosClient.post(`/admin/garages-approval/${id}/reject`, { status })
     return response.data
   }
 
